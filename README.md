@@ -1,10 +1,10 @@
 # BreakBlip
 
-Are you at the end of your rope with end-of-semester stress? We've all been there. That's why we created BreakBlip，find a burned-out-buddy for virtual companion in your burned-out time.
+Are you at the end of your rope with end-of-semester stress? We've all been there. That's why we created BreakBlip, find a burned-out buddy for a virtual companion in your burned-out time.
 
 How it works:
 
-Whenever you feel like you're crashing, just double-click the image of your little buddy. Instantly, your burned-out-buddy's icon turns gray, visually sharing your moment of breakdown. Plus, it keeps track of break times, so you can see just how much you've conquered and emerged from those challenging burned-out moments.
+Whenever you feel like you're crashing, just double-click the image of your little buddy. Instantly, your burned-out buddy's icon turns grey, visually sharing your moment of breakdown. Plus, it keeps track of break times, so you can see just how much you've conquered and emerged from those challenging burned-out moments.
 
 Why you'll love it:
 
