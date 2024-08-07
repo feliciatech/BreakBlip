@@ -6,7 +6,7 @@ How it works:
 
 Whenever you feel like you're crashing, just double-click the image of your little buddy. Instantly, your burned-out buddy's icon turns grey, visually sharing your moment of breakdown. Plus, it keeps track of break times, so you can see just how much you've conquered and emerged from those challenging burned-out moments.
 
-![BreakBlip example gif](BreakBlip/Instruction%20gif/BreakBlip%20example.gif)
+![BreakBlip example gif](Instruction%20gif/BreakBlip%20example.gif)
 
 Why you'll love it:
 
