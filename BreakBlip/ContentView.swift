@@ -5,55 +5,87 @@
 //  Created by EW on 24/06/2024.
 //
 
+import Cocoa
 import SwiftUI
-import SwiftData
+import AppKit
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var isGrayscale = false
+    @State private var clickCount = 0
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        VStack {
+            GIFImage(name: "PixelOfficer", isGrayscale: $isGrayscale)
+                .frame(width: 128, height: 128)
+                .onTapGesture(count: 2) {
+                    Blip()
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-            .toolbar {
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
+            Spacer().frame(height: 20) // Add 20 points of white space between image and text
+            Text("Burned-out \(clickCount) times")
+                            .padding(.top, 10)
         }
+        .frame(width: 128, height: 200) // Adjust the frame size to accommodate the text
     }
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+    func Blip() {
+        // Increment click count
+        clickCount += 1
+        
+        // Turn the gif gray
+        isGrayscale = true
+        
+        // Color restored after 1 second
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            isGrayscale = false
         }
     }
+}
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+struct GIFImage: NSViewRepresentable {
+    let name: String
+    @Binding var isGrayscale: Bool
+
+    func makeNSView(context: Context) -> NSImageView {
+        let imageView = NSImageView()
+        imageView.canDrawSubviewsIntoLayer = true
+        updateImageView(imageView)
+        imageView.imageScaling = .scaleProportionallyUpOrDown
+        return imageView
+    }
+
+    func updateNSView(_ nsView: NSImageView, context: Context) {
+        updateImageView(nsView)
+    }
+
+    private func updateImageView(_ imageView: NSImageView) {
+        if let path = Bundle.main.path(forResource: name, ofType: "gif") {
+            if let image = NSImage(contentsOfFile: path) {
+                if isGrayscale {
+                    imageView.image = image.grayscale
+                } else {
+                    imageView.image = image
+                }
             }
         }
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+extension NSImage {
+    var grayscale: NSImage? {
+        guard let tiffData = self.tiffRepresentation,
+              let bitmapImage = NSBitmapImageRep(data: tiffData) else {
+            return nil
+        }
+
+        let ciImage = CIImage(bitmapImageRep: bitmapImage)
+        guard let grayscale = ciImage?.applyingFilter("CIPhotoEffectMono") else {
+            return nil
+        }
+
+        let rep = NSCIImageRep(ciImage: grayscale)
+        let nsImage = NSImage(size: rep.size)
+        nsImage.addRepresentation(rep)
+
+        return nsImage
+    }
 }

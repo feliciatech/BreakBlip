@@ -28,5 +28,6 @@ struct BreakBlipApp: App {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+        .windowStyle(HiddenTitleBarWindowStyle())
     }
 }
